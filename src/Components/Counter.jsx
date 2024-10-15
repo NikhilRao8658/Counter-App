@@ -1,38 +1,49 @@
 
+import React, { useReducer } from "react";
+
+const initialState = { value: 0 };
 
 
-import React, { Component } from "react";
-
-export default class Counter extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: 0
-        };
+const reducer = (state, action) => {
+    switch (action.type) {
+        case "increment":
+            return { value: state.value + 1 };
+        case "decrement":
+            return { value: state.value - 1 };
+        case "reset":
+            return initialState;
+        default:
+            return state;
     }
+};
 
-    incr = () => {
-        this.setState({ value: this.state.value + 1 });
+const Counter = () => {
+
+    const [state, dispatch] = useReducer(reducer, initialState);
+
+    const increment = () => {
+        dispatch({ type: "increment" });
     };
 
-    dec = () => {
-        this.setState({ value: this.state.value - 1 });
+    const decrement = () => {
+        dispatch({ type: "decrement" });
     };
 
-    reset = () => {
-        this.setState({ value: 0 });
+    const reset = () => {
+        dispatch({ type: "reset" });
     };
 
-    render() {
-        return (
-            <div className="counter-container">
-                <button className="counter-button" onClick={this.dec}>-</button>
-                <span className="counter-value">{this.state.value}</span>
-                <button className="counter-button" onClick={this.incr}>+</button>
-                <button className="counter-button reset-button" onClick={this.reset}>RESET</button>
-            </div>
-        );
-    }
-}
+    return (
+        <div className="counter-container">
+            <button className="counter-button" onClick={decrement}>-</button>
+            <span className="counter-value">{state.value}</span>
+            <button className="counter-button" onClick={increment}>+</button>
+            <button className="counter-button reset-button" onClick={reset}>RESET</button>
+        </div>
+    );
+};
+
+export default Counter;
+
 
 
